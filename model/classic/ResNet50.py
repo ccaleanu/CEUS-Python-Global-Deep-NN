@@ -32,10 +32,8 @@ class ResNet50:
         print("[INFO] preparing model...")
 
         # Create a model that includes the augmentation stage
-        img_height = 180
-        img_width = 180
-        depth = 3
-        input_shape = (img_height, img_width, depth)
+        input_shape=(config.img_height, config.img_width, config.depth)
+        
         inputs = tf.keras.Input(shape=input_shape)
 
         # augment images
