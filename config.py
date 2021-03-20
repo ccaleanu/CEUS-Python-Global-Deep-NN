@@ -8,7 +8,8 @@
 myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
 #myModelName = 'ResNet50'
-myModelName = 'NASNetMobile'
+#myModelName = 'NASNetMobile'
+myModelName='EfficientNetB0'
 
 #myModelType = 'model.custom'
 #myModelName = 'Sequential12'
@@ -37,9 +38,9 @@ data_dir = "E:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI"
 #PATIENS_TAKEN = False
 PATIENS_TAKEN = 11
 
-EPOCHS = 40
+EPOCHS = 20
 #Early Stopping patience
-patience = 20
+patience = 10
 
 #SHUFFLE = False
 SHUFFLE = True
