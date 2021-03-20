@@ -98,7 +98,7 @@ for nrexp in range(config.EXPERIMENTS):
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                             metrics=['accuracy'])
             
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
+            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
             mc = ModelCheckpoint('../Output/best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
             tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
             
