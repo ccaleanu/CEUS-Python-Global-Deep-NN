@@ -43,7 +43,7 @@ EPOCHS = 40
 #Early Stopping patience
 patience = 20
 
-#SHUFFLE = False
+#SHUFFLE = True
 SHUFFLE = False
 
 EXPERIMENTS = 1

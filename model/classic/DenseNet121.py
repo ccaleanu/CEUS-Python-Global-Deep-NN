@@ -48,11 +48,12 @@ class DenseNet121:
         )
                 
         x = data_augmentation(inputs)
-        preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
+        #preprocess_input = tf.keras.applications.DenseNet121.preprocess_input
 
         # load the DenseNet121 network, ensuring the head FC layer sets are left off
-        baseModel = tf.keras.applications.DenseNet121(include_top=False, weights='imagenet', input_shape=input_shape)
-        baseModel.trainable = False
+        #baseModel = tf.keras.applications.DenseNet121(include_top=False, weights='imagenet', input_shape=input_shape)
+        baseModel = tf.keras.applications.DenseNet121(include_top=False, weights=None, input_shape=input_shape)
+        baseModel.trainable = True
         #baseModel.summary()
              
         # construct the head of the model that will be placed on top of the the base model

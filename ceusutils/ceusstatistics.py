@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 np.set_printoptions(precision=2)
-object = pd.read_pickle(r'Output\Sequential12\11\B113-S1-Asus I5-9400 GPU RTX 2060\output-09-Feb-2021_0537X.pkl')
+object = pd.read_pickle(r'Output\output-21-Mar-2021_1056hard-vote.pkl')
 
 # transform dict to pd.dataframe
 #pdf = pd.DataFrame.from_dict(object, orient='index')
