@@ -15,13 +15,12 @@ Version History
 - v2.2 - memory leaks solved (Resource exhausted:  Failed to allocate memory for the batch)
 - v2.3 - max voting for validation error
 - v2.4 - introduce pre-trained/transfer learning DNN support, enhanced results display & statistics   
-- v.2.5 - globals to config.py, interface to TensorBoard, added color_mode "rbg"/"rgba"/"grayscale", enhance log/output, 4 custom,  4 pre-trained 
+- v.2.5 - globals to config.py, enhance log/output, interface to TensorBoard, added color_mode "rbg"/"rgba"/"grayscale" for input images, support now 5 custom and 5 pre-trained (ResNet50, MobileNetV2, NASNetMobile, EfficientNetB0 and DenseNet121) architectures
 
 
 Fetaures TBD
+- v2.5.1 - - display % of total done, estimate remaining time after each patient, calculate and log mean time/epoch
+- log in myModelName/EXPERIMENTS/PATIENS_TAKEN/ 
 
-- display % of total done
-- estimate remaining time
-- log training history, settings (model name, patinets taken, etc)
-- leave out specific patient
 - opt between leave one out and split evaluations
+- leave out specific patient
