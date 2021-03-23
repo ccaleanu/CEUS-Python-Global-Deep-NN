@@ -33,7 +33,9 @@ class MobileNetV2:
 
         # Create a model that includes the augmentation stage
         input_shape=(config.img_height, config.img_width, config.depth)
-
+        
+        inputs = tf.keras.Input(shape=input_shape)
+        
         # augment images
         data_augmentation = tf.keras.Sequential(
         [
@@ -45,11 +47,11 @@ class MobileNetV2:
         )
                 
         x = data_augmentation(inputs)
-        preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
+        #preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
 
         # load the MobileNetV2 network, ensuring the head FC layer sets are left off
-        baseModel = tf.keras.applications.MobileNetV2(include_top=False, weights='imagenet', input_shape=input_shape)
-        baseModel.trainable = False
+        baseModel = tf.keras.applications.MobileNetV2(include_top=False, weights=config.weights, input_shape=input_shape)
+        baseModel.trainable = config.trainable
         #baseModel.summary()
              
         # construct the head of the model that will be placed on top of the the base model

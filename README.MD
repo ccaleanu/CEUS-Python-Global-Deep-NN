@@ -24,3 +24,6 @@ Fetaures TBD
 
 - opt between leave one out and split evaluations
 - leave out specific patient
+
+MobileNetV2 - 45s gtx1050
+ResNet50,, NASNetMobile, EfficientNetB0 and DenseNet121
