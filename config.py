@@ -24,10 +24,10 @@ DISPLAY_TRAINING = False
 
 myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
-myModelName = 'NASNetMobile'
+#myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
-#myModelName = 'ResNet50'
+myModelName = 'ResNet50'
 
 #myModelType = 'model.custom'
 #myModelName = 'Sequential12'
