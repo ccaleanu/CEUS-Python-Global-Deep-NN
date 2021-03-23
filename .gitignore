@@ -26,3 +26,13 @@ model/classic/__pycache__/MobileNetV2.cpython-36.pyc
 model/classic/__pycache__/ResNet50.cpython-36.pyc
 model/classic/__pycache__/__init__.cpython-36.pyc
 model/classic/__pycache__/DenseNet121.cpython-36.pyc
+model/classic/__pycache__/__init__.cpython-38.pyc
+model/classic/__pycache__/MobileNetV2.cpython-38.pyc
+model/classic/__pycache__/NASNetMobile.cpython-38.pyc
+model/classic/__pycache__/ResNet50.cpython-38.pyc
+model/classic/__pycache__/__init__.cpython-38.pyc
+model/classic/__pycache__/DenseNet121.cpython-38.pyc
+model/classic/__pycache__/EfficientNetB0.cpython-38.pyc
+model/classic/__pycache__/MobileNetV2.cpython-38.pyc
+model/classic/__pycache__/NASNetMobile.cpython-38.pyc
+model/classic/__pycache__/ResNet50.cpython-38.pyc

@@ -50,7 +50,7 @@ class EfficientNetB0:
         #preprocess_input = tf.keras.applications.efficientnetv2.preprocess_input
 
         # load the EfficientNetB0 network, ensuring the head FC layer sets are left off
-        baseModel = tf.keras.applications.EfficientNetB0(include_top=False, weights=weights=config.weights, input_shape=input_shape)
+        baseModel = tf.keras.applications.EfficientNetB0(include_top=False, weights=config.weights, input_shape=input_shape)
         baseModel.trainable = config.trainable
         #baseModel.summary()
              
