@@ -23,8 +23,8 @@ DISPLAY_TRAINING = False
 # custom myModelName: {Sequential12, Sequential17}
 
 myModelType = 'model.classic'
-myModelName = 'MobileNetV2'
-#myModelName = 'NASNetMobile'
+#myModelName = 'MobileNetV2'
+myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 #myModelName = 'ResNet50'
