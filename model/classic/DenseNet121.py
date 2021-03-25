@@ -33,7 +33,6 @@ class DenseNet121:
 
         # Create a model that includes the augmentation stage
         input_shape=(config.img_height, config.img_width, config.depth)
-        
         inputs = tf.keras.Input(shape=input_shape)
 
         # augment images
@@ -42,22 +41,23 @@ class DenseNet121:
         layers.experimental.preprocessing.RandomFlip("horizontal", input_shape=(config.img_height, config.img_width, config.depth)),
         layers.experimental.preprocessing.RandomRotation(0.1),
         layers.experimental.preprocessing.RandomZoom(0.1),
-        layers.experimental.preprocessing.Rescaling(1./127.5, offset= -1)
         ]
         )
-                
-        x = data_augmentation(inputs)
-        #preprocess_input = tf.keras.applications.DenseNet121.preprocess_input
+        
+        #layers.experimental.preprocessing.Rescaling(1./127.5, offset= -1)
+        
+        x = data_augmentation(inputs)        
+
+        preprocess_input = tf.keras.applications.densenet.preprocess_input
+
+        x = preprocess_input(x)
 
         # load the DenseNet121 network, ensuring the head FC layer sets are left off
         baseModel = tf.keras.applications.DenseNet121(include_top=False, weights=config.weights, input_shape=input_shape)
         baseModel.trainable = config.trainable
-        #baseModel.summary()
-             
-        # construct the head of the model that will be placed on top of the the base model
-        headModel = baseModel.output
 
-        headModel = tf.keras.layers.GlobalAveragePooling2D()(headModel)
+        x = baseModel(x)
+        headModel = tf.keras.layers.GlobalAveragePooling2D()(x)
         '''
         headModel = tf.keras.layers.AveragePooling2D(pool_size=(6, 6))(headModel)
         headModel = tf.keras.layers.Flatten(name="flatten")(headModel)
@@ -68,6 +68,6 @@ class DenseNet121:
         headModel = tf.keras.layers.Dense(num_classes, activation="softmax")(headModel)
         # place the head FC model on top of the base model (this will become
         # the actual model we will train)
-        model = tf.keras.Model(inputs=baseModel.input, outputs=headModel)
+        model = tf.keras.Model(inputs, headModel)
 
         return model
