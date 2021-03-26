@@ -5,9 +5,9 @@ data_dir = "E:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI"
 
 #PATIENS_TAKEN = False = all patients
 #PATIENS_TAKEN = False
-PATIENS_TAKEN = 1
+PATIENS_TAKEN = 2
 
-EPOCHS = 1
+EPOCHS = 3
 #Early Stopping patience
 patience = 20
 
@@ -58,3 +58,8 @@ img_width = 224
 weights='imagenet'
 #trainable = {True, False}
 trainable = False
+
+if PATIENS_TAKEN:
+    total_patients = PATIENS_TAKEN*5
+else:
+    total_patients = 91

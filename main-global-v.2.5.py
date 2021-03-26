@@ -55,7 +55,7 @@ print("Lesions and patients:")
 for item in p_dict.items():
     print(item)
 print("=============================================")
-
+count_processed_patients = 0
 for nrexp in range(config.EXPERIMENTS):
     # due to possibly shuffle, p_dict shoud not be removed from here  
     p_dict = CeusImagesGenerator.patients_sets(config.data_dir)
@@ -175,8 +175,11 @@ for nrexp in range(config.EXPERIMENTS):
             del history
             print("Garbage collected: ", gc.collect())
             tf.keras.backend.clear_session()
+            count_processed_patients = count_processed_patients + 1
             ETA = (time.time() - start_time_patient)//60
-            print('Time per patient [min]:', ETA)                  
+            print('Time per patient [min]:', ETA)
+            percent = (100*count_processed_patients)//config.total_patients
+            print(percent, '% completed,', ETA*(config.total_patients-count_processed_patients), ' mins left')                  
             print("=========End one out==========")
 
         p_dict[lesion]=[p_dict[lesion], best_val]
@@ -214,7 +217,7 @@ for line in r:
 f.write("\n")
 f.write('Time per patient [min]: ' + str(ETA))
 f.write("\n")
-f.write("Total elapse time [min]: " + str((time.time() - start_time)//60)))
+f.write("Total elapse time [min]: " + str((time.time() - start_time)//60))
 f.close()
 r.close()
 
