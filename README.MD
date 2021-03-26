@@ -28,5 +28,5 @@ Fetaures TBD
 MobileNetV2  - 45s gtx1050
 NASNetMobile - 50s rtx2060
 EfficientNetB0
-DenseNet121
+DenseNet121 - 40s rtx2080super
 ResNet50 - 28s rtx2080super
