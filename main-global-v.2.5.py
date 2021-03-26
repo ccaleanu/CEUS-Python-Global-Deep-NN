@@ -8,8 +8,13 @@ import matplotlib.pyplot as plt
 import gc
 import config
 
-myModel = __import__(config.myModelType + '.' + config.myModelName, fromlist=[config.myModelName])
-myClassifier = getattr(myModel, config.myModelName)
+if config.myModelType == 'model.classic':
+    myModel = __import__(config.myModelType + '.' + 'AllClassic', fromlist=['AllClassic'])
+    myClassifier = getattr(myModel, 'AllClassic')
+else:
+    myModel = __import__(config.myModelType + '.' + config.myModelName, fromlist=[config.myModelName])
+    myClassifier = getattr(myModel, config.myModelName)
+
 
 # ceusimage contains custom generator for leave-one-patient implementation
 from ceusutils.ceusimage import CeusImagesGenerator 
@@ -38,8 +43,9 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 t = time.localtime()
 timestamp = time.strftime('%d-%b-%Y_%H%M', t)
-BACKUP_NAME = "../Output/output" + "-" + timestamp
-LOG_DIR = "../LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
+BACKUP_NAME = "./Output/output" + "-" + timestamp
+LOG_DIR = "./LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
+BEST_MODEL_PATH_FILE = './Output/best_model.h5'
 
 data_dir_p = pathlib.Path(config.data_dir)
 image_count = len(list(data_dir_p.glob('*/*.jpg')))
@@ -65,6 +71,7 @@ for nrexp in range(config.EXPERIMENTS):
             p_dict[lesion]=p_dict[lesion][0:config.PATIENS_TAKEN]
             x_dict[lesion]=x_dict[lesion][0:config.PATIENS_TAKEN]
         for one_out in p_dict[lesion]:
+            start_time_patient = time.time()
             print("Lesion:", lesion, ", Total patients:", len(p_dict[lesion]))
             current_index = (p_dict[lesion].index(one_out))+1
             print("Index One_out:", one_out, ", Current Index:", current_index, "from:", len(p_dict[lesion]))
@@ -99,11 +106,11 @@ for nrexp in range(config.EXPERIMENTS):
                             metrics=['accuracy'])
             
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
-            mc = ModelCheckpoint('../Output/best_model.h5', monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
+            mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
             tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
             
             # tensorboard just for the first patient of each lesion
-            if (current_index == 1 and nrexp+1 ==1):
+            if (config.TF_Board and current_index == 1 and nrexp+1 ==1):
                 history = model.fit(
                     train_ds,
                     validation_data=val_ds,
@@ -126,7 +133,7 @@ for nrexp in range(config.EXPERIMENTS):
             best_val.append(bst)
 
             # load the saved model
-            model = tf.keras.models.load_model('../Output/best_model.h5')
+            model = tf.keras.models.load_model(BEST_MODEL_PATH_FILE)
             #hard vote implementation
             predictions = model.predict((val_ds))
             pred = tf.argmax(predictions, axis=-1)
@@ -167,8 +174,9 @@ for nrexp in range(config.EXPERIMENTS):
             del model
             del history
             print("Garbage collected: ", gc.collect())
-            tf.keras.backend.clear_session()          
-                        
+            tf.keras.backend.clear_session()
+            ETA = (time.time() - start_time_patient)//60
+            print('Time per patient [min]:', ETA)                  
             print("=========End one out==========")
 
         p_dict[lesion]=[p_dict[lesion], best_val]
@@ -184,7 +192,7 @@ f = open(BACKUP_NAME + "simple-vote.pkl","wb")
 pickle.dump(all_experiments, f)
 f.close()
 
-r = open("config.py", "r") 
+r = open("./Current/config.py", "r") 
 f = open(BACKUP_NAME + "simple-vote.txt","w")
 f.write( str(all_experiments))
 f.write("\n")
@@ -197,12 +205,16 @@ f = open(BACKUP_NAME + "hard-vote.pkl","wb")
 pickle.dump(all_experimentsx, f)
 f.close()
 
-r = open("config.py", "r") 
+r = open("./Current/config.py", "r") 
 f = open(BACKUP_NAME + "hard-vote.txt","w")
 f.write( str(all_experimentsx))
 f.write("\n")
 for line in r:
     f.write(line)
+f.write("\n")
+f.write('Time per patient [min]:', ETA, "\n")
+f.write("\n")
+f.write("Total elapse time: ", (time.time() - start_time)//60, "minutes")
 f.close()
 r.close()
 

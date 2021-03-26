@@ -25,8 +25,8 @@ Fetaures TBD
 - opt between leave one out and split evaluations
 - leave out specific patient
 
-MobileNetV2  - 45s gtx1050
-NASNetMobile - 50s rtx2060
-EfficientNetB0
-DenseNet121 - 40s rtx2080super
-ResNet50 - 28s rtx2080super
+- MobileNetV2       - xxs rtx2080super             45s gtx1050
+- NASNetMobile      - xxs rtx2080super 50s rtx2060
+- EfficientNetB0    - xxs rtx2080super
+- DenseNet121       - 40s rtx2080super
+- ResNet50          - 28s rtx2080super
