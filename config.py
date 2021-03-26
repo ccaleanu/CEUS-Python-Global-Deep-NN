@@ -17,7 +17,7 @@ SHUFFLE = False
 EXPERIMENTS = 1
 
 DISPLAY_TRAINING = False
-TF_Board = True
+TF_Board = False
 
 AUG = True
 PREPROC = True
@@ -29,10 +29,10 @@ PREPROC = True
 myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
 #myModelName = 'NASNetMobile'
-#myModelName ='EfficientNetB0'
+myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 #myModelName = 'ResNet50'
-myModelName = 'EfficientNetB3'
+#myModelName = 'EfficientNetB3'
 
 #myModelType = 'model.custom'
 #myModelName = 'Sequential12'

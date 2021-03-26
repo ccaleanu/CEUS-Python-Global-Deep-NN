@@ -212,9 +212,9 @@ f.write("\n")
 for line in r:
     f.write(line)
 f.write("\n")
-f.write('Time per patient [min]:', ETA, "\n")
+f.write('Time per patient [min]: ' + str(ETA))
 f.write("\n")
-f.write("Total elapse time: ", (time.time() - start_time)//60, "minutes")
+f.write("Total elapse time [min]: " + str((time.time() - start_time)//60)))
 f.close()
 r.close()
 
