@@ -5,16 +5,16 @@ data_dir = "E:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI"
 
 #PATIENS_TAKEN = False = all patients
 #PATIENS_TAKEN = False
-PATIENS_TAKEN = 2
+PATIENS_TAKEN = 1
 
-EPOCHS = 3
+EPOCHS = 1
 #Early Stopping patience
 patience = 20
 
 #SHUFFLE = True
 SHUFFLE = False
 
-EXPERIMENTS = 1
+EXPERIMENTS = 2
 
 DISPLAY_TRAINING = False
 TF_Board = False
@@ -28,8 +28,8 @@ PREPROC = True
 
 myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
-#myModelName = 'NASNetMobile'
-myModelName ='EfficientNetB0'
+myModelName = 'NASNetMobile'
+#myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 #myModelName = 'ResNet50'
 #myModelName = 'EfficientNetB3'
@@ -59,7 +59,3 @@ weights='imagenet'
 #trainable = {True, False}
 trainable = False
 
-if PATIENS_TAKEN:
-    total_patients = PATIENS_TAKEN*5
-else:
-    total_patients = 91
