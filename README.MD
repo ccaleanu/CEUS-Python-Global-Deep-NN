@@ -16,11 +16,17 @@ Version History
 - v2.3 - max voting for validation error
 - v2.4 - introduce pre-trained/transfer learning DNN support, enhanced results display & statistics   
 - v.2.5 - globals to config.py, enhance log/output, interface to TensorBoard, added color_mode "rbg"/"rgba"/"grayscale" for input images, support now 5 custom and 5 pre-trained (ResNet50, MobileNetV2, NASNetMobile, EfficientNetB0 and DenseNet121) architectures
+- v.2.6 - all classic architectures from tf.applications, display % of total done, estimate remaining time after each patient, enhanced logs
 
 
 Fetaures TBD
-- v2.5.1 - - display % of total done, estimate remaining time after each patient, calculate and log mean time/epoch
-- log in myModelName/EXPERIMENTS/PATIENS_TAKEN/ 
 
+- log in myModelName/EXPERIMENTS/PATIENS_TAKEN/ 
 - opt between leave one out and split evaluations
 - leave out specific patient
+
+- MobileNetV2       - xxs rtx2080super             45s gtx1050
+- NASNetMobile      - xxs rtx2080super 50s rtx2060
+- EfficientNetB0    - xxs rtx2080super
+- DenseNet121       - 40s rtx2080super
+- ResNet50          - 28s rtx2080super
