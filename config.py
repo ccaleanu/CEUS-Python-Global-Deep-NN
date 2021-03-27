@@ -24,38 +24,39 @@ PREPROC = True
 
 # myModelType = {model.classic, model.custom}
 # classic myModelName: any from https://keras.io/api/applications/, e.g., ResNet50, MobileNetV2, etc.
-# custom myModelName: {Sequential12, Sequential17}
+# custom myModelName: {SequentialS, Sequential12, Sequential17}
 
-myModelType = 'model.classic'
+#myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
-myModelName = 'NASNetMobile'
+#myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 #myModelName = 'ResNet50'
 #myModelName = 'EfficientNetB3'
 
-#myModelType = 'model.custom'
+myModelType = 'model.custom'
+myModelName = 'SequentialS'
 #myModelName = 'Sequential12'
 #myModelName = 'Sequential17'
 
 batch_size = 16
 
 #color_mode must be one of {"rbg", "rgba", "grayscale"}
-#color_mode = 'grayscale'
-color_mode = 'rgb'
+color_mode = 'grayscale'
+#color_mode = 'rgb'
 #depth must be one of {1 - for grayscale, 3 - for rgb and rgba}
-#depth = 1
-depth = 3
+depth = 1
+#depth = 3
 
 #settings for all custom Sequentials
-#img_height = 180
-#img_width = 180
+img_height = 180
+img_width = 180
 
 #settings for all Classics
-img_height = 224
-img_width = 224
+#img_height = 224
+#img_width = 224
 #weights={'imagenet', None}
-weights='imagenet'
+#weights='imagenet'
 #trainable = {True, False}
-trainable = False
+#trainable = False
 

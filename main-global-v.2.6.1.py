@@ -7,6 +7,8 @@ import random
 import matplotlib.pyplot as plt
 import gc
 import config
+import os
+import sys
 
 if config.myModelType == 'model.classic':
     myModel = __import__(config.myModelType + '.' + 'AllClassic', fromlist=['AllClassic'])
@@ -52,6 +54,10 @@ timestamp = time.strftime('%d-%b-%Y_%H%M', t)
 BACKUP_NAME = "./Output/output" + "-" + timestamp
 LOG_DIR = "./LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
 BEST_MODEL_PATH_FILE = './Output/best_model.h5'
+
+cwd = os.getcwd()
+if os.path.basename(cwd) != 'Global classif':
+    sys.exit('Change the current dir to "Global classif"!')
 
 data_dir_p = pathlib.Path(config.data_dir)
 image_count = len(list(data_dir_p.glob('*/*.jpg')))
@@ -112,17 +118,18 @@ for nrexp in range(config.EXPERIMENTS):
                             metrics=['accuracy'])
             
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
+            es_val = EarlyStopping(monitor='val_acc', baseline=1.0, patience=0)  # use 'val_acc' instead to monitor validation accuarcy
             mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
-            tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
             
             # tensorboard just for the first patient of each lesion
             if (config.TF_Board and current_index == 1 and nrexp+1 ==1):
+                tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
                 history = model.fit(
                     train_ds,
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, mc, tb]
+                    callbacks=[es, es_val, mc, tb]
                 )
             else:
                 history = model.fit(
@@ -130,7 +137,7 @@ for nrexp in range(config.EXPERIMENTS):
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, mc]
+                    callbacks=[es, es_val, mc]
                 ) 
             
             # simple vote - used, if hard vote fails - do not comment
@@ -184,7 +191,7 @@ for nrexp in range(config.EXPERIMENTS):
             count_processed_patients = count_processed_patients + 1
             ETA = round((time.time() - start_time_patient)/60,2)
             print('Time per patient [min]:', ETA)
-            percent = round((config.EXPERIMENTS*100*count_processed_patients)//total_patients, 2)
+            percent = round((100*count_processed_patients)//(total_patients*config.EXPERIMENTS), 2)
             remaining = round(ETA*(config.EXPERIMENTS*total_patients-count_processed_patients),2)
             print(percent, '% completed,', remaining, ' mins left')                  
             print("=========End one out==========")
