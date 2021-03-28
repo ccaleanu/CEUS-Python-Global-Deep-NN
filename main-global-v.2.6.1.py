@@ -118,7 +118,6 @@ for nrexp in range(config.EXPERIMENTS):
                             metrics=['accuracy'])
             
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
-            es_val = EarlyStopping(monitor='val_acc', baseline=1.0, patience=0)  # use 'val_acc' instead to monitor validation accuarcy
             mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
             
             # tensorboard just for the first patient of each lesion
@@ -129,7 +128,7 @@ for nrexp in range(config.EXPERIMENTS):
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, es_val, mc, tb]
+                    callbacks=[es, mc, tb]
                 )
             else:
                 history = model.fit(
@@ -137,7 +136,7 @@ for nrexp in range(config.EXPERIMENTS):
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, es_val, mc]
+                    callbacks=[es, mc]
                 ) 
             
             # simple vote - used, if hard vote fails - do not comment
