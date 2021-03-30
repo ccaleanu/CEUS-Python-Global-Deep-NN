@@ -39,17 +39,40 @@ class AllClassic:
         [
         layers.experimental.preprocessing.RandomFlip("horizontal", input_shape=(config.img_height, config.img_width, config.depth)),
         layers.experimental.preprocessing.RandomRotation(0.1),
-        layers.experimental.preprocessing.RandomZoom(0.1),
+        layers.experimental.preprocessing.RandomZoom(0.1)
         ]
         )
         
-        #layers.experimental.preprocessing.Rescaling, e.g., 1./127.5, offset= -1
-        if config.AUG:
-            x = data_augmentation(inputs)        
+        x = inputs
 
-        preprocess_input = tf.keras.applications.densenet.preprocess_input
+        if config.AUG:
+             x = data_augmentation(x)        
+
+        if config.myModelName == 'MobileNet':
+            preproc = tf.keras.applications.mobilenet.preprocess_input
+        if config.myModelName == 'MobileNetV2':
+            preproc = tf.keras.applications.mobilenet_v2.preprocess_input
+        if config.myModelName == 'MobileNetV3Small':
+            preproc = tf.keras.applications.mobilenet_v3.preprocess_input
+        if config.myModelName == 'NASNetMobile':
+            preproc = tf.keras.applications.nasnet.preprocess_input
+        if (config.myModelName == 'EfficientNetB0' or
+            config.myModelName == 'EfficientNetB1' or
+            config.myModelName == 'EfficientNetB2' or
+            config.myModelName == 'EfficientNetB3'):
+            preproc = tf.keras.applications.efficientnet.preprocess_input
+        if (config.myModelName == 'DenseNet121' or
+            config.myModelName == 'DenseNet169' or
+            config.myModelName == 'DenseNet201'):
+            preproc = tf.keras.applications.densenet.preprocess_input
+        if config.myModelName == 'ResNet50':
+            preproc = tf.keras.applications.resnet.preprocess_input
+        if config.myModelName == 'MobileNetV2':
+            preproc = tf.keras.applications.mobilenet_v2.preprocess_input
+
+#myModelName = 'EfficientNetB3'
         if config.PREPROC:
-            x = preprocess_input(x)
+             x = preproc(x)
 
         # load the network, ensuring the head FC layer sets are left off
         class_bM = getattr(tf.keras.applications, config.myModelName)
