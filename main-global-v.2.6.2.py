@@ -7,6 +7,8 @@ import random
 import matplotlib.pyplot as plt
 import gc
 import config
+import os
+import sys
 
 if config.myModelType == 'model.classic':
     myModel = __import__(config.myModelType + '.' + 'AllClassic', fromlist=['AllClassic'])
@@ -53,8 +55,14 @@ BACKUP_NAME = "./Output/output" + "-" + timestamp
 LOG_DIR = "./LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
 BEST_MODEL_PATH_FILE = './Output/best_model.h5'
 
+cwd = os.getcwd()
+if os.path.basename(cwd) != 'Global classif':
+    sys.exit('Change the current dir to "Global classif"!')
+
 data_dir_p = pathlib.Path(config.data_dir)
 image_count = len(list(data_dir_p.glob('*/*.jpg')))
+if image_count == 0:
+    sys.exit('No data set loaded. Check the path "data_dir" from config.py!')
 print("Total number of DB images:", image_count)
 p_dict = CeusImagesGenerator.patients_sets(config.data_dir)
 print("Lesions and patients:")
@@ -113,10 +121,10 @@ for nrexp in range(config.EXPERIMENTS):
             
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
             mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
-            tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
             
             # tensorboard just for the first patient of each lesion
             if (config.TF_Board and current_index == 1 and nrexp+1 ==1):
+                tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
                 history = model.fit(
                     train_ds,
                     validation_data=val_ds,
@@ -184,7 +192,7 @@ for nrexp in range(config.EXPERIMENTS):
             count_processed_patients = count_processed_patients + 1
             ETA = round((time.time() - start_time_patient)/60,2)
             print('Time per patient [min]:', ETA)
-            percent = round((config.EXPERIMENTS*100*count_processed_patients)//total_patients, 2)
+            percent = round((100*count_processed_patients)//(total_patients*config.EXPERIMENTS), 2)
             remaining = round(ETA*(config.EXPERIMENTS*total_patients-count_processed_patients),2)
             print(percent, '% completed,', remaining, ' mins left')                  
             print("=========End one out==========")

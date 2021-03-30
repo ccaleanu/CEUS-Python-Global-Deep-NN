@@ -1,40 +1,39 @@
 # disable GPU
 #os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-data_dir = "E:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI"
+#data_dir = "d:/MY/DBV50LEZIUNI"
+data_dir = 'e:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI'
 
-#PATIENS_TAKEN = False = all patients
-#PATIENS_TAKEN = False
-PATIENS_TAKEN = 1
+#PATIENS_TAKEN = {False = all patients, number}
+PATIENS_TAKEN = False
+#PATIENS_TAKEN = 11
 
-EPOCHS = 1
+EPOCHS = 40
 #Early Stopping patience
-patience = 20
+patience = EPOCHS/2
 
 #SHUFFLE = True
 SHUFFLE = False
 
-EXPERIMENTS = 2
+EXPERIMENTS = 1
 
 DISPLAY_TRAINING = False
 TF_Board = False
 
-AUG = True
-PREPROC = True
-
 # myModelType = {model.classic, model.custom}
 # classic myModelName: any from https://keras.io/api/applications/, e.g., ResNet50, MobileNetV2, etc.
-# custom myModelName: {Sequential12, Sequential17}
+# custom myModelName: {SequentialS, Sequential12, Sequential17}
 
 myModelType = 'model.classic'
-#myModelName = 'MobileNetV2'
-myModelName = 'NASNetMobile'
+myModelName = 'MobileNetV2'
+#myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 #myModelName = 'ResNet50'
 #myModelName = 'EfficientNetB3'
 
 #myModelType = 'model.custom'
+#myModelName = 'SequentialS'
 #myModelName = 'Sequential12'
 #myModelName = 'Sequential17'
 
@@ -55,7 +54,8 @@ depth = 3
 img_height = 224
 img_width = 224
 #weights={'imagenet', None}
-weights='imagenet'
+weights=None
 #trainable = {True, False}
-trainable = False
-
+trainable = True
+AUG = True
+PREPROC = True
