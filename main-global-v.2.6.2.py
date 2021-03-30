@@ -61,6 +61,8 @@ if os.path.basename(cwd) != 'Global classif':
 
 data_dir_p = pathlib.Path(config.data_dir)
 image_count = len(list(data_dir_p.glob('*/*.jpg')))
+if image_count == 0:
+    sys.exit('No data set loaded. Check the path "data_dir" from config.py!')
 print("Total number of DB images:", image_count)
 p_dict = CeusImagesGenerator.patients_sets(config.data_dir)
 print("Lesions and patients:")
