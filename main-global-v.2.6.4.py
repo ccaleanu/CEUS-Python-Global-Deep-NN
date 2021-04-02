@@ -119,7 +119,8 @@ for nrexp in range(config.EXPERIMENTS):
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                             metrics=['accuracy'])
             
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
+            #es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
+            es = EarlyStopping(monitor='val_accuracy', mode='auto', verbose=1, patience = config.patience)
             mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
             
             # tensorboard just for the first patient of each lesion
@@ -130,7 +131,7 @@ for nrexp in range(config.EXPERIMENTS):
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, mc, tb]
+                    callbacks=[tb, mc, es]
                 )
             else:
                 history = model.fit(
@@ -138,7 +139,7 @@ for nrexp in range(config.EXPERIMENTS):
                     validation_data=val_ds,
                     epochs=config.EPOCHS,
                     verbose=1,
-                    callbacks=[es, mc]
+                    callbacks=[mc, es]
                 ) 
             
             # simple vote - used, if hard vote fails - do not comment
