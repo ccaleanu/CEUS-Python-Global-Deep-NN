@@ -46,13 +46,13 @@ class SequentialS:
         
         model = Sequential(name='SeqS')
         model.add(data_augmentation)
-        model.add(layers.Conv2D(32, 3, padding='same', activation='relu'))
+        model.add(layers.Conv2D(16, 3, padding='same', activation='relu'))
         model.add(layers.BatchNormalization())
         model.add(layers.PReLU())
         model.add(layers.MaxPooling2D())
 
         model.add(layers.Flatten())
-        model.add(layers.Dense(256, activation='relu'))
+        model.add(layers.Dense(128, activation='relu'))
         model.add(layers.BatchNormalization())
         model.add(layers.PReLU())
         model.add(layers.Dropout(0.5))
@@ -60,7 +60,7 @@ class SequentialS:
         model.add(layers.Dense(num_classes))
         model.add(layers.Activation('softmax'))
 
-        # model.summary()
+        model.summary()
         
         # return the constructed network architecture
         return model
