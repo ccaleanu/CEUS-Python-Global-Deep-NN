@@ -5,17 +5,18 @@
 data_dir = 'e:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI'
 
 #PATIENS_TAKEN = {False = all patients, number}
-PATIENS_TAKEN = False
-#PATIENS_TAKEN = 11
+#PATIENS_TAKEN = False
+PATIENS_TAKEN = 11
 
-EPOCHS = 40
+EPOCHS = 12
 #Early Stopping patience
-patience = EPOCHS/2
+#patience = EPOCHS/2
+patience = 10
 
-#SHUFFLE = True
-SHUFFLE = False
+SHUFFLE = True
+#SHUFFLE = False
 
-EXPERIMENTS = 1
+EXPERIMENTS = 5
 
 DISPLAY_TRAINING = False
 TF_Board = False

@@ -48,4 +48,11 @@ model/classic/__pycache__/DenseNet121.cpython-38.pyc
 ceusutils/__pycache__/ceusstatistics.cpython-38.pyc
 model/custom/__pycache__/__init__.cpython-38.pyc
 model/custom/__pycache__/SequentialS.cpython-38.pyc
+<<<<<<< HEAD
+=======
+model/classic/__pycache__/__init__.cpython-38.pyc
+model/custom/__pycache__/__init__.cpython-36.pyc
+model/custom/__pycache__/__init__.cpython-38.pyc
+model/custom/__pycache__/Sequential12.cpython-38.pyc
+>>>>>>> origin/main
 model/custom/__pycache__/SequentialS.cpython-36.pyc
