@@ -8,11 +8,7 @@ data_dir = 'e:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI'
 #PATIENS_TAKEN = False
 PATIENS_TAKEN = 11
 
-<<<<<<< HEAD
 EPOCHS = 12
-=======
-EPOCHS = 40
->>>>>>> c80e7e10d1adf583c957ff75f9fa13b1f4180aed
 #Early Stopping patience
 #patience = EPOCHS/2
 patience = 10
