@@ -60,7 +60,7 @@ class SequentialS:
         model.add(layers.Dense(num_classes))
         model.add(layers.Activation('softmax'))
 
-        model.summary()
+        #model.summary()
         
         # return the constructed network architecture
         return model
