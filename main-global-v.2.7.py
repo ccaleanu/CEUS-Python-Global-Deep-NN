@@ -9,6 +9,7 @@ import gc
 import config
 import os
 import sys
+import seaborn as sns
 
 if config.myModelType == 'model.classic':
     myModel = __import__(config.myModelType + '.' + 'AllClassic', fromlist=['AllClassic'])
@@ -16,7 +17,6 @@ if config.myModelType == 'model.classic':
 else:
     myModel = __import__(config.myModelType + '.' + config.myModelName, fromlist=[config.myModelName])
     myClassifier = getattr(myModel, config.myModelName)
-
 
 # ceusimage contains custom generator for leave-one-patient implementation
 from ceusutils.ceusimage import CeusImagesGenerator 
@@ -34,6 +34,7 @@ else:
 
 all_experiments={}
 all_experimentsx={}
+all_cml={}
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -74,6 +75,7 @@ for nrexp in range(config.EXPERIMENTS):
     # due to possibly shuffle, p_dict shoud not be removed from here  
     p_dict = CeusImagesGenerator.patients_sets(config.data_dir)
     x_dict = p_dict.copy()
+    cml = {}
     num_classes = len(p_dict)
     print("Starting experiment", nrexp+1)
     for lesion in p_dict:
@@ -81,6 +83,8 @@ for nrexp in range(config.EXPERIMENTS):
             random.shuffle(p_dict[lesion])
         best_val = []
         x_val = []
+        y_true = []
+        y_pred = []
         if config.PATIENS_TAKEN:
             p_dict[lesion]=p_dict[lesion][0:config.PATIENS_TAKEN]
             x_dict[lesion]=x_dict[lesion][0:config.PATIENS_TAKEN]
@@ -159,6 +163,16 @@ for nrexp in range(config.EXPERIMENTS):
             else:
                 x_val.append(bst)          
 
+            y_true.append(list(p_dict.keys()).index(lesion))
+            y_pred.append(tf.argmax(hist))    
+            cml[lesion] = tf.math.confusion_matrix(y_true, y_pred, num_classes=5)
+            # commands = ['FNH', 'HCC', 'HMG', 'METAHIPER', 'METAHIPO']
+            # plt.figure(figsize=(10, 8))
+            # sns.heatmap(cm, xticklabels=commands, yticklabels=commands, annot=True, fmt='g')
+            # plt.xlabel('Prediction')
+            # plt.ylabel('Label')
+            # plt.show()
+
             if config.DISPLAY_TRAINING:
                 acc = history.history['accuracy']
                 val_acc = history.history['val_accuracy']
@@ -197,12 +211,13 @@ for nrexp in range(config.EXPERIMENTS):
             remaining = round(ETA*(config.EXPERIMENTS*total_patients-count_processed_patients),2)
             print(percent, '% completed,', remaining, ' mins left')                  
             print("=========End one out==========")
-
+        
         p_dict[lesion]=[p_dict[lesion], best_val]
         x_dict[lesion]=[x_dict[lesion], x_val]
         print("=============End one lesion=======================")
     all_experiments[str(nrexp)] = p_dict
     all_experimentsx[str(nrexp)] = x_dict
+    all_cml[str(nrexp)] = cml
     print("===============End one experiment=============================")
 print("======================End all experimets=================================")
 

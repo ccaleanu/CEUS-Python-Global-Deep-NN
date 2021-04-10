@@ -6,9 +6,9 @@ data_dir = 'e:/MY/My Databases/MEDICAL/CEUS/UMF/DBV50LEZIUNI'
 
 #PATIENS_TAKEN = {False = all patients, number}
 #PATIENS_TAKEN = False
-PATIENS_TAKEN = 1
+PATIENS_TAKEN = 3
 
-EPOCHS = 12
+EPOCHS = 3
 #Early Stopping patience
 #patience = EPOCHS/2
 patience = 5
