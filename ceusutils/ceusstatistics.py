@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import decimal
+import seaborn as sns
+import time
 
 def ceusstatistics(file, plots):
 
@@ -63,18 +65,21 @@ def ceusstatistics(file, plots):
     print("Accuracy over all experiments is: " "%.2f" %np.mean(allexpmeanperlessions))
     print("===========================================================================")
 
-    f = open(file+'.txt','a+')
-    f.write("\n")
-    f.write("Maxs: " + str(np.max(allexpmeanperlessions, axis=0)))
-    f.write("\n")
-    f.write("Means: " + str(np.mean(allexpmeanperlessions, axis=0)))
-    f.write("\n")
-    f.write("Mins: " + str(np.min(allexpmeanperlessions, axis=0)))
-    f.write("\n")
-    f.write("Stds: " + str(np.std(allexpmeanperlessions, axis=0)))
-    f.write("\n")
-    f.write("Accuracy over all experiments is: " + "%.2f" %np.mean(allexpmeanperlessions))
-    f.close()
+    if __name__ != '__main__':
+        f = open(file+'.txt','a+')
+        f.write("\n")
+        f.write("Maxs: " + str(np.max(allexpmeanperlessions, axis=0)))
+        f.write("\n")
+        f.write("Means: " + str(np.mean(allexpmeanperlessions, axis=0)))
+        f.write("\n")
+        f.write("Mins: " + str(np.min(allexpmeanperlessions, axis=0)))
+        f.write("\n")
+        f.write("Stds: " + str(np.std(allexpmeanperlessions, axis=0)))
+        f.write("\n")
+        f.write("Accuracy over all experiments is: " + "%.2f" %np.mean(allexpmeanperlessions))
+        f.write("\n")
+        f.write("Confusion matrix:" + str(all_cm))
+        f.close()
 
     if plots:
         xx = np.asarray(allexpmeanperlessions).T
@@ -83,17 +88,14 @@ def ceusstatistics(file, plots):
         plt.show(block=False)  
         plt.ylim(0, 1)
         plt.boxplot(xx.tolist(), labels = labels, meanline=True)
+        for key2 in object:
+            plt.figure(figsize=(10, 8))
+            sns.heatmap(all_cm[key2], xticklabels=labels, yticklabels=labels, annot=True, fmt='g')
+            plt.xlabel('Prediction')
+            plt.ylabel('Label')
         plt.show()
-
-    # commands = ['FNH', 'HCC', 'HMG', 'METAHIPER', 'METAHIPO']
-    # plt.figure(figsize=(10, 8))
-    # sns.heatmap(all_cm[str(nrexp)], xticklabels=commands, yticklabels=commands, annot=True, fmt='g')
-    # plt.xlabel('Prediction')
-    # plt.ylabel('Label')
-    # plt.show()
-
 
 if __name__ == '__main__':
 
-    saved = './Output/output-27-Mar-2021_0139hard-vote'
-    ceusstatistics(saved, False)
+    saved = './Output/output-10-Apr-2021_2237hard-vote'
+    ceusstatistics(saved, True)

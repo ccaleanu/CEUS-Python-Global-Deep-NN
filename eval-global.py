@@ -9,7 +9,6 @@ import gc
 import config
 import os
 import sys
-import seaborn as sns
 
 if config.myModelType == 'model.classic':
     myModel = __import__(config.myModelType + '.' + 'AllClassic', fromlist=['AllClassic'])
@@ -165,7 +164,7 @@ for nrexp in range(config.EXPERIMENTS):
 
             y_true.append(list(p_dict.keys()).index(lesion))
             y_pred.append(tf.argmax(hist))    
-            cm = tf.math.confusion_matrix(y_true, y_pred, num_classes=5)
+            cm = (tf.math.confusion_matrix(y_true, y_pred, num_classes=5)).numpy()
 
             if config.DISPLAY_TRAINING:
                 acc = history.history['accuracy']
