@@ -6,7 +6,7 @@ import decimal
 def ceusstatistics(file, plots):
 
     np.set_printoptions(precision=2)
-    object = pd.read_pickle(file+'.pkl')
+    object, all_cm = pd.read_pickle(file+'.pkl')
 
     # transform dict to pd.dataframe
     #pdf = pd.DataFrame.from_dict(object, orient='index')
@@ -84,6 +84,14 @@ def ceusstatistics(file, plots):
         plt.ylim(0, 1)
         plt.boxplot(xx.tolist(), labels = labels, meanline=True)
         plt.show()
+
+    # commands = ['FNH', 'HCC', 'HMG', 'METAHIPER', 'METAHIPO']
+    # plt.figure(figsize=(10, 8))
+    # sns.heatmap(all_cm[str(nrexp)], xticklabels=commands, yticklabels=commands, annot=True, fmt='g')
+    # plt.xlabel('Prediction')
+    # plt.ylabel('Label')
+    # plt.show()
+
 
 if __name__ == '__main__':
 
