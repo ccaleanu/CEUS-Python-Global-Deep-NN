@@ -160,7 +160,10 @@ for nrexp in range(config.EXPERIMENTS):
             if tf.argmax(hist) == list(p_dict.keys()).index(lesion):
                 x_val.append(1)
             else:
-                x_val.append(bst)          
+                # accuracy over presented pictures, doesn't match global confusion matrix (gcm)
+                x_val.append(bst)
+                # accuracy over patients, does match gcm
+                # x_val.append(0)          
 
             y_true.append(list(p_dict.keys()).index(lesion))
             y_pred.append(tf.argmax(hist))    
@@ -212,6 +215,8 @@ for nrexp in range(config.EXPERIMENTS):
     all_experimentsx[str(nrexp)] = x_dict
     all_cm[str(nrexp)] = cm
     print("===============End one experiment=============================")
+#compute global confusion matrix
+gcm = sum(x for x in all_cm.values())
 print("======================End all experimets=================================")
 
 f = open(BACKUP_NAME + "simple-vote.pkl","wb")
@@ -236,6 +241,8 @@ f = open(BACKUP_NAME + "hard-vote.txt","w")
 f.write( str(all_experimentsx))
 f.write("\n")
 f.write( str(all_cm))
+f.write("\n")
+f.write( str(gcm))
 f.write("\n")
 for line in r:
     f.write(line)

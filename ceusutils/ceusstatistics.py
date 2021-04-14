@@ -21,6 +21,7 @@ def ceusstatistics(file, plots):
         print("Experiment no.:", int(key1)+1)
         j=0
         lmean = []
+        print("Confusion matrix:", '\n', all_cm[key1])
         if plots:
             plt.figure()
             plt.suptitle("Experiment " + key1)
@@ -57,7 +58,9 @@ def ceusstatistics(file, plots):
 
         allexpmeanperlessions.append(lmean)
     print("==================================================")
-    
+    #compute global confusion matrix
+    gcm = sum(x for x in all_cm.values())
+    print("Global confusion matrix:", '\n', gcm)
     print("Maxs: ", np.max(allexpmeanperlessions, axis=0))
     print("Means: ", np.mean(allexpmeanperlessions, axis=0))
     print("Mins: ", np.min(allexpmeanperlessions, axis=0))
@@ -77,8 +80,6 @@ def ceusstatistics(file, plots):
         f.write("Stds: " + str(np.std(allexpmeanperlessions, axis=0)))
         f.write("\n")
         f.write("Accuracy over all experiments is: " + "%.2f" %np.mean(allexpmeanperlessions))
-        f.write("\n")
-        f.write("Confusion matrix:" + str(all_cm))
         f.close()
 
     if plots:
@@ -88,14 +89,18 @@ def ceusstatistics(file, plots):
         plt.show(block=False)  
         plt.ylim(0, 1)
         plt.boxplot(xx.tolist(), labels = labels, meanline=True)
-        for key2 in object:
+        for key2 in all_cm:
             plt.figure(figsize=(10, 8))
             sns.heatmap(all_cm[key2], xticklabels=labels, yticklabels=labels, annot=True, fmt='g')
             plt.xlabel('Prediction')
             plt.ylabel('Label')
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(gcm, xticklabels=labels, yticklabels=labels, annot=True, fmt='g')
+        plt.xlabel('Prediction')
+        plt.ylabel('Label')
         plt.show()
 
 if __name__ == '__main__':
 
-    saved = './Output/output-10-Apr-2021_2237hard-vote'
+    saved = './Output/output-14-Apr-2021_1846hard-vote'
     ceusstatistics(saved, True)
