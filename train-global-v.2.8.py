@@ -147,7 +147,8 @@ for nrexp in range(config.EXPERIMENTS):
             
             # simple vote - used, if hard vote fails - do not comment
             ## best_val.append(mc.best)
-            bst = float(np.round(max(history.history['val_accuracy']), 2))
+            #bst = float(np.round(max(history.history['val_accuracy']), 2))
+            bst = model.evaluate(val_ds)[1]
             best_val.append(bst)
 
             # load the saved model
@@ -250,6 +251,8 @@ f.write("\n")
 f.write('Time per patient [min]: ' + str(ETA))
 f.write("\n")
 f.write("Total elapse time [min]: " + str((time.time() - start_time)//60))
+f.write("\n")
+f.write(sys.executable)
 f.close()
 r.close()
 

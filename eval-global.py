@@ -24,6 +24,18 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import ModelCheckpoint
 from ceusutils.ceusstatistics import ceusstatistics
 
+BEST_MODEL_PATH_FILE = "./Output/ResNet50/from scratch/all/best_model.h5"
+# load the saved model
+model = myClassifier.build(5)
+model_s = tf.keras.models.load_model(BEST_MODEL_PATH_FILE)
+
+model_s.save_weights("pretrained_weights.h5")
+model.load_weights("pretrained_weights.h5")
+
+model.compile(optimizer='adam',
+                loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                metrics=['accuracy'])
+
 start_time = time.time()
 
 if config.PATIENS_TAKEN:
@@ -51,9 +63,8 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 t = time.localtime()
 timestamp = time.strftime('%d-%b-%Y_%H%M', t)
-BACKUP_NAME = "./Output/output" + "-" + timestamp
+BACKUP_NAME = "./Output/test" + "-" + timestamp
 LOG_DIR = "./LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
-BEST_MODEL_PATH_FILE = './Output/best_model' + '-' + timestamp + '.h5'
 
 cwd = os.getcwd()
 if os.path.basename(cwd) != 'Global classif':
@@ -110,48 +121,14 @@ for nrexp in range(config.EXPERIMENTS):
                 batch_size=config.batch_size)
             
             train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-            val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
-            
-            # if pathlib.Path.exists(pathlib.Path("trained_model")):
-            #     model = tf.keras.models.load_model('trained_model')
-            # else:
-            
-            model = myClassifier.build(num_classes)
-
-            model.compile(optimizer='adam',
-                            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                            metrics=['accuracy'])
-            
-            #es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=config.patience)
-            es = EarlyStopping(monitor='val_accuracy', mode='auto', verbose=1, patience = config.patience)
-            mc = ModelCheckpoint(BEST_MODEL_PATH_FILE, monitor='val_accuracy', mode='max', verbose=1, save_best_only=True)
-            
-            # tensorboard just for the first patient of each lesion
-            if (config.TF_Board and current_index == 1 and nrexp+1 ==1):
-                tb = tf.keras.callbacks.TensorBoard(log_dir=LOG_DIR, histogram_freq=1)
-                history = model.fit(
-                    train_ds,
-                    validation_data=val_ds,
-                    epochs=config.EPOCHS,
-                    verbose=1,
-                    callbacks=[tb, mc, es]
-                )
-            else:
-                history = model.fit(
-                    train_ds,
-                    validation_data=val_ds,
-                    epochs=config.EPOCHS,
-                    verbose=1,
-                    callbacks=[mc, es]
-                ) 
-            
+            val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)         
+                  
             # simple vote - used, if hard vote fails - do not comment
             ## best_val.append(mc.best)
-            bst = float(np.round(max(history.history['val_accuracy']), 2))
+            bst = model.evaluate(val_ds)[1]
             best_val.append(bst)
+            
 
-            # load the saved model
-            model = tf.keras.models.load_model(BEST_MODEL_PATH_FILE)
             #hard vote implementation
             predictions = model.predict((val_ds))
             pred = tf.argmax(predictions, axis=-1)
@@ -160,7 +137,10 @@ for nrexp in range(config.EXPERIMENTS):
             if tf.argmax(hist) == list(p_dict.keys()).index(lesion):
                 x_val.append(1)
             else:
-                x_val.append(bst)          
+                # accuracy over presented pictures, doesn't match global confusion matrix (gcm)
+                x_val.append(bst)
+                # accuracy over patients, does match gcm
+                # x_val.append(0)          
 
             y_true.append(list(p_dict.keys()).index(lesion))
             y_pred.append(tf.argmax(hist))    
@@ -193,8 +173,8 @@ for nrexp in range(config.EXPERIMENTS):
             # prevent memory leak
             del train_ds
             del val_ds
-            del model
-            del history
+            #del model
+            #del history
             print("Garbage collected: ", gc.collect())
             tf.keras.backend.clear_session()
             count_processed_patients = count_processed_patients + 1
