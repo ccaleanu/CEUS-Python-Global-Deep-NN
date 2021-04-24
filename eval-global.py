@@ -17,7 +17,6 @@ else:
     myModel = __import__(config.myModelType + '.' + config.myModelName, fromlist=[config.myModelName])
     myClassifier = getattr(myModel, config.myModelName)
 
-
 # ceusimage contains custom generator for leave-one-patient implementation
 from ceusutils.ceusimage import CeusImagesGenerator 
 # needed for saving the best model (not the last one) 
@@ -34,6 +33,7 @@ else:
 
 all_experiments={}
 all_experimentsx={}
+all_cm={}
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -53,7 +53,7 @@ t = time.localtime()
 timestamp = time.strftime('%d-%b-%Y_%H%M', t)
 BACKUP_NAME = "./Output/output" + "-" + timestamp
 LOG_DIR = "./LOGS/fit/" + time.strftime('%d-%b-%Y_%H%M', t)
-BEST_MODEL_PATH_FILE = './Output/best_model.h5'
+BEST_MODEL_PATH_FILE = './Output/best_model' + '-' + timestamp + '.h5'
 
 cwd = os.getcwd()
 if os.path.basename(cwd) != 'Global classif':
@@ -74,6 +74,9 @@ for nrexp in range(config.EXPERIMENTS):
     # due to possibly shuffle, p_dict shoud not be removed from here  
     p_dict = CeusImagesGenerator.patients_sets(config.data_dir)
     x_dict = p_dict.copy()
+    y_true = []
+    y_pred = []
+    cm = []
     num_classes = len(p_dict)
     print("Starting experiment", nrexp+1)
     for lesion in p_dict:
@@ -159,6 +162,10 @@ for nrexp in range(config.EXPERIMENTS):
             else:
                 x_val.append(bst)          
 
+            y_true.append(list(p_dict.keys()).index(lesion))
+            y_pred.append(tf.argmax(hist))    
+            cm = (tf.math.confusion_matrix(y_true, y_pred, num_classes=5)).numpy()
+
             if config.DISPLAY_TRAINING:
                 acc = history.history['accuracy']
                 val_acc = history.history['val_accuracy']
@@ -197,15 +204,15 @@ for nrexp in range(config.EXPERIMENTS):
             remaining = round(ETA*(config.EXPERIMENTS*total_patients-count_processed_patients),2)
             print(percent, '% completed,', remaining, ' mins left')                  
             print("=========End one out==========")
-
+        
         p_dict[lesion]=[p_dict[lesion], best_val]
         x_dict[lesion]=[x_dict[lesion], x_val]
         print("=============End one lesion=======================")
     all_experiments[str(nrexp)] = p_dict
     all_experimentsx[str(nrexp)] = x_dict
+    all_cm[str(nrexp)] = cm
     print("===============End one experiment=============================")
 print("======================End all experimets=================================")
-
 
 f = open(BACKUP_NAME + "simple-vote.pkl","wb")
 pickle.dump(all_experiments, f)
@@ -221,12 +228,14 @@ f.close()
 r.close()
 
 f = open(BACKUP_NAME + "hard-vote.pkl","wb")
-pickle.dump(all_experimentsx, f)
+pickle.dump([all_experimentsx, all_cm], f)
 f.close()
 
 r = open("./Current/config.py", "r") 
 f = open(BACKUP_NAME + "hard-vote.txt","w")
 f.write( str(all_experimentsx))
+f.write("\n")
+f.write( str(all_cm))
 f.write("\n")
 for line in r:
     f.write(line)
