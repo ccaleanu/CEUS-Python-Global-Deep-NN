@@ -18,3 +18,4 @@ Version History
 - v.2.5 - globals to config.py, enhance log/output, interface to TensorBoard, added color_mode "rbg"/"rgba"/"grayscale" for input images, support now 5 custom and 5 pre-trained (ResNet50, MobileNetV2, NASNetMobile, EfficientNetB0 and DenseNet121) architectures
 - v.2.6 - all classic architectures from tf.applications, display % of total done, estimate remaining time after each patient, enhanced logs
 - v.2.7 - confusion matrices
+- v.2.8 - evaluation of a trained model added (eval-global.py), save the (conda env + computer) names 
