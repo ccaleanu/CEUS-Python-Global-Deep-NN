@@ -30,13 +30,8 @@ myModelType = 'model.classic'
 #myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
-<<<<<<< HEAD
 myModelName = 'DenseNet201'
 #myModelName = 'ResNet50'
-=======
-#myModelName = 'DenseNet201'
-myModelName = 'ResNet50'
->>>>>>> e9e54cbab68dfbe2918b8042fe49ef3c169ef86a
 #myModelName = 'EfficientNetB3'
 
 #myModelType = 'model.custom'
