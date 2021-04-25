@@ -27,9 +27,10 @@ TF_Board = False
 
 myModelType = 'model.classic'
 #myModelName = 'MobileNetV2'
-myModelName = 'NASNetMobile'
+#myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
+myModelName = 'DenseNet201'
 #myModelName = 'ResNet50'
 #myModelName = 'EfficientNetB3'
 
