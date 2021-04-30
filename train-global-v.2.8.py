@@ -48,21 +48,19 @@ if gpus:
         print(e)
 
 def limitgpu(maxmem):
-	gpus = tf.config.list_physical_devices('GPU')
-	if gpus:
-		# Restrict TensorFlow to only allocate a fraction of GPU memory
-		try:
-			for gpu in gpus:
-				tf.config.experimental.set_virtual_device_configuration(gpu,
-						[tf.config.experimental.VirtualDeviceConfiguration(memory_limit=maxmem)])
-                        print("GPU Memory limited to:", maxmem, "GB")
-		except RuntimeError as e:
-			# Virtual devices must be set before GPUs have been initialized
-			print(e)
-
+    if gpus:
+        # Restrict TensorFlow to only allocate a fraction of GPU memory
+        try:
+            for gpu in gpus:
+                tf.config.experimental.set_virtual_device_configuration(gpu, [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=maxmem)])
+                print("GPU Memory limited to:", maxmem, "GB")
+        except RuntimeError as e:
+            # Virtual devices must be set before GPUs have been initialized
+            print(e)
 
 # impose a GPU memory limit 2.5GB
-limitgpu(2048+512) 
+if config.LIMIT_MEM:
+    limitgpu(2048+512) 
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 

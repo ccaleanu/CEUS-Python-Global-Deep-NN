@@ -47,7 +47,8 @@ class AllClassic:
 
         if config.AUG:
              x = data_augmentation(x)        
-
+        if config.myModelName == 'Xception':
+            preproc = tf.keras.applications.xception.preprocess_input
         if config.myModelName == 'MobileNet':
             preproc = tf.keras.applications.mobilenet.preprocess_input
         if config.myModelName == 'MobileNetV2':
@@ -67,6 +68,8 @@ class AllClassic:
             preproc = tf.keras.applications.densenet.preprocess_input
         if config.myModelName == 'ResNet50':
             preproc = tf.keras.applications.resnet.preprocess_input
+        if config.myModelName == 'ResNet50V2':
+            preproc = tf.keras.applications.resnet_v2.preprocess_input
         if config.myModelName == 'MobileNetV2':
             preproc = tf.keras.applications.mobilenet_v2.preprocess_input
 

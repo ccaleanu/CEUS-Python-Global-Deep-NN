@@ -21,17 +21,20 @@ EXPERIMENTS = 1
 DISPLAY_TRAINING = False
 TF_Board = False
 
+LIMIT_MEM = False
 # myModelType = {model.classic, model.custom}
 # classic myModelName: any from https://keras.io/api/applications/, e.g., ResNet50, MobileNetV2, etc.
 # custom myModelName: {SequentialS, Sequential12, Sequential17}
 
 myModelType = 'model.classic'
-#myModelName = 'MobileNetV2'
+
+#myModelName = 'Xception'
 #myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
 myModelName = 'DenseNet201'
 #myModelName = 'ResNet50'
+#myModelName = 'ResNet50V2'
 #myModelName = 'EfficientNetB3'
 
 #myModelType = 'model.custom'
