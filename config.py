@@ -21,7 +21,8 @@ EXPERIMENTS = 1
 DISPLAY_TRAINING = False
 TF_Board = False
 
-LIMIT_MEM = False
+LIMIT_MEM = True
+memory_limit=4096
 # myModelType = {model.classic, model.custom}
 # classic myModelName: any from https://keras.io/api/applications/, e.g., ResNet50, MobileNetV2, etc.
 # custom myModelName: {SequentialS, Sequential12, Sequential17}
