@@ -1,0 +1,7 @@
+pandas
+scipy  
+matplotlib
+seaborn
+pillow
+opencv-contrib-python
+tensorflow

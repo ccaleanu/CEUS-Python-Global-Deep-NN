@@ -47,6 +47,8 @@ class AllClassic:
 
         if config.AUG:
              x = data_augmentation(x)        
+        if config.myModelName == 'InceptionResNetV2':
+            preproc = tf.keras.applications.inception_resnet_v2.preprocess_input
         if config.myModelName == 'Xception':
             preproc = tf.keras.applications.xception.preprocess_input
         if config.myModelName == 'MobileNet':
@@ -55,7 +57,8 @@ class AllClassic:
             preproc = tf.keras.applications.mobilenet_v2.preprocess_input
         if config.myModelName == 'MobileNetV3Small':
             preproc = tf.keras.applications.mobilenet_v3.preprocess_input
-        if config.myModelName == 'NASNetMobile':
+        if (config.myModelName == 'NASNetMobile' or
+            config.myModelName == 'NASNetLarge'):
             preproc = tf.keras.applications.nasnet.preprocess_input
         if (config.myModelName == 'EfficientNetB0' or
             config.myModelName == 'EfficientNetB1' or

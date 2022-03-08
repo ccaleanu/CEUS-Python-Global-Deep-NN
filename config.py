@@ -10,8 +10,8 @@ PATIENS_TAKEN = False
 
 EPOCHS = 40
 #Early Stopping patience
-#patience = EPOCHS/2
-patience = 15
+patience = EPOCHS/2
+#patience = 15
 
 #SHUFFLE = True
 SHUFFLE = False
@@ -21,7 +21,7 @@ EXPERIMENTS = 1
 DISPLAY_TRAINING = False
 TF_Board = False
 
-LIMIT_MEM = True
+LIMIT_MEM = False
 memory_limit=4096
 # myModelType = {model.classic, model.custom}
 # classic myModelName: any from https://keras.io/api/applications/, e.g., ResNet50, MobileNetV2, etc.
@@ -29,11 +29,13 @@ memory_limit=4096
 
 myModelType = 'model.classic'
 
+myModelName = 'NASNetLarge'
+#myModelName = 'InceptionResNetV2'
 #myModelName = 'Xception'
 #myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'
-myModelName = 'DenseNet201'
+#myModelName = 'DenseNet201'
 #myModelName = 'ResNet50'
 #myModelName = 'ResNet50V2'
 #myModelName = 'EfficientNetB3'
@@ -43,7 +45,7 @@ myModelName = 'DenseNet201'
 #myModelName = 'Sequential12'
 #myModelName = 'Sequential17'
 
-batch_size = 16
+batch_size = 32
 
 #color_mode must be one of {"rbg", "rgba", "grayscale"}
 #color_mode = 'grayscale'
