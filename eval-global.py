@@ -24,7 +24,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.callbacks import ModelCheckpoint
 from ceusutils.ceusstatistics import ceusstatistics
 
-BEST_MODEL_PATH_FILE = "./Output/ResNet50/from scratch/all/best_model.h5"
+BEST_MODEL_PATH_FILE = "./Output/Xception/from-scratch/all/best_model-20-Jul-2021_1615.h5"
 # load the saved model
 model = myClassifier.build(5)
 model_s = tf.keras.models.load_model(BEST_MODEL_PATH_FILE)
@@ -130,10 +130,10 @@ for nrexp in range(config.EXPERIMENTS):
             
 
             #hard vote implementation
-            predictions = model.predict((val_ds))
+            predictions = model.predict(val_ds)
             pred = tf.argmax(predictions, axis=-1)
             hist = tf.histogram_fixed_width(pred, [0,4], nbins=5)
-            # test the current prediction vs right answe
+            # test the current prediction vs right answer
             if tf.argmax(hist) == list(p_dict.keys()).index(lesion):
                 x_val.append(1)
             else:

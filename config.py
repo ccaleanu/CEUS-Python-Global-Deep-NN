@@ -29,9 +29,9 @@ memory_limit=4096
 
 myModelType = 'model.classic'
 
-myModelName = 'NASNetLarge'
+#myModelName = 'NASNetLarge'
 #myModelName = 'InceptionResNetV2'
-#myModelName = 'Xception'
+myModelName = 'Xception'
 #myModelName = 'NASNetMobile'
 #myModelName ='EfficientNetB0'
 #myModelName ='DenseNet121'

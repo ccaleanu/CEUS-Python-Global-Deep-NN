@@ -4,4 +4,4 @@ matplotlib
 seaborn
 pillow
 opencv-contrib-python
-tensorflow
+tensorflow == 2.5
